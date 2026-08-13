@@ -53,10 +53,17 @@ Page({
     this.setData({ loading: true })
     try {
       const { page, searchKey, activeCategory } = this.data
-      let url = `/api/skills?page=${page}&page_size=10`
-      if (searchKey) url += `&keyword=${encodeURIComponent(searchKey)}`
-      if (activeCategory) url += `&category=${encodeURIComponent(activeCategory)}`
-      const res = await get(url)
+      let url, res
+      if (searchKey) {
+        // 搜索走专用搜索接口
+        url = `/api/skills/search/list?keyword=${encodeURIComponent(searchKey)}&page=${page}&page_size=10`
+        res = await get(url)
+      } else {
+        // 普通列表（可按分类筛选）
+        url = `/api/skills?page=${page}&page_size=10`
+        if (activeCategory) url += `&category=${encodeURIComponent(activeCategory)}`
+        res = await get(url)
+      }
       const items = res.items || []
       this.setData({
         skills: page === 1 ? items : [...this.data.skills, ...items],
