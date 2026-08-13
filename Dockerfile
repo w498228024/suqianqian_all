@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY suqianqian-server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 复制应用代码
+# 复制应用代码（含 suqianqian.db，.dockerignore 已放行）
 COPY suqianqian-server/ .
 
 # 创建上传目录

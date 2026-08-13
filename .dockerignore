@@ -6,6 +6,7 @@ venv/
 .idea/
 .vscode/
 *.db
+!suqianqian-server/suqianqian.db
 uploads/
 admin/
 node_modules/
