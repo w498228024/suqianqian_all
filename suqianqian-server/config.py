@@ -19,7 +19,10 @@ class Settings(BaseSettings):
     ADMIN_INIT_PASSWORD: str = os.getenv("ADMIN_INIT_PASSWORD", "admin123456")
 
     # ==================== 数据库 ====================
-    DATABASE_URL: str = "sqlite+aiosqlite:///./suqianqian.db"
+    # 云托管环境通过环境变量 DATABASE_PATH 指定 db 文件路径（如 /data/suqianqian.db）
+    # 本地开发默认使用项目目录下的 suqianqian.db
+    DATABASE_PATH: str = os.getenv("DATABASE_PATH", "./suqianqian.db")
+    DATABASE_URL: str = "sqlite+aiosqlite:///" + os.getenv("DATABASE_PATH", "./suqianqian.db")
 
     # ==================== 分页配置 ====================
     PAGE_SIZE: int = 20
