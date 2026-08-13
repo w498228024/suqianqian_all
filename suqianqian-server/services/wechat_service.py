@@ -1,9 +1,15 @@
 """
-数签签 - 微信服务层
+AI Skill 库 - 微信服务层
 封装与微信开放平台的交互逻辑
 """
 import httpx
+import ssl
 from config import settings
+
+# 云托管环境内部代理使用自签名证书，需要跳过 SSL 验证
+_ssl_context = ssl.create_default_context()
+_ssl_context.check_hostname = False
+_ssl_context.verify_mode = ssl.CERT_NONE
 
 
 async def code2session(code: str) -> dict:
@@ -18,7 +24,7 @@ async def code2session(code: str) -> dict:
         "js_code": code,
         "grant_type": "authorization_code",
     }
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         resp = await client.get(url, params=params)
         data = resp.json()
 
@@ -43,7 +49,7 @@ async def get_phone_number(code: str) -> str:
     url = f"https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token={access_token}"
     payload = {"code": code}
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         resp = await client.post(url, json=payload)
         data = resp.json()
 
@@ -65,7 +71,7 @@ async def get_access_token() -> str:
         "appid": settings.WECHAT_APP_ID,
         "secret": settings.WECHAT_APP_SECRET,
     }
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         resp = await client.get(url, params=params)
         data = resp.json()
 
