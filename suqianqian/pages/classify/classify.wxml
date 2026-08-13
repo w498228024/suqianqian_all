@@ -1,0 +1,49 @@
+<view class="page-classify">
+  <!-- 分类树 -->
+  <view class="category-tree">
+    <view class="cat-group" wx:for="{{categories}}" wx:key="name">
+      <view class="cat-parent {{activeCategory === item.name ? 'active' : ''}}"
+        data-cat="{{item.name}}" bindtap="onCategoryTap">
+        <text class="cat-name">{{item.name}}</text>
+        <text class="cat-count">{{item.sub_categories.length}}</text>
+      </view>
+      <view class="cat-children" wx:if="{{activeCategory === item.name}}">
+        <view class="cat-child {{activeSub === subItem ? 'active' : ''}}"
+          wx:for="{{item.sub_categories}}" wx:for-item="subItem" wx:key="*this"
+          data-sub="{{subItem}}" bindtap="onSubTap">
+          {{subItem}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 右侧 Skill 列表 -->
+  <view class="skill-panel" wx:if="{{activeCategory}}">
+    <view class="panel-header">
+      <text class="panel-title">{{activeCategory}}{{activeSub ? ' / ' + activeSub : ''}}</text>
+    </view>
+    <view class="skill-list">
+      <view class="skill-card" wx:for="{{skills}}" wx:key="id"
+        data-id="{{item.id}}" bindtap="onSkillTap">
+        <text class="card-title">{{item.title}}</text>
+        <text class="card-desc">{{item.desc}}</text>
+        <view class="card-tags">
+          <text class="tag tag-success" wx:for="{{item.fit_tools}}" wx:for-item="tool" wx:key="*this">{{tool}}</text>
+        </view>
+      </view>
+      <view class="loading-tip" wx:if="{{loading}}">
+        <text>加载中...</text>
+      </view>
+      <view class="empty-state" wx:if="{{!loading && skills.length === 0}}">
+        <text class="empty-icon">📭</text>
+        <text class="empty-text">该分类暂无 Skill</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 未选择分类时的提示 -->
+  <view class="empty-state" wx:if="{{!activeCategory}}">
+    <text class="empty-icon">📂</text>
+    <text class="empty-text">点击左侧分类查看 Skill</text>
+  </view>
+</view>

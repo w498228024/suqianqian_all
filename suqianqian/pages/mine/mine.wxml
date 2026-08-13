@@ -1,0 +1,77 @@
+<view class="page-mine">
+  <!-- 未登录 -->
+  <view class="not-login" wx:if="{{!isLoggedIn}}">
+    <view class="login-hint">
+      <text class="login-icon">👤</text>
+      <text class="login-text">登录后享受收藏和上传功能</text>
+      <button class="btn-primary login-btn" bindtap="goLogin">立即登录</button>
+    </view>
+  </view>
+
+  <!-- 已登录 -->
+  <view class="mine-content" wx:if="{{isLoggedIn}}">
+    <!-- 功能菜单 -->
+    <view class="menu-section">
+      <view class="menu-item {{activeTab === 'favorites' ? 'active' : ''}}"
+        data-tab="favorites" bindtap="onTabTap">
+        <text class="menu-icon">❤</text>
+        <text class="menu-text">我的收藏</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item {{activeTab === 'uploads' ? 'active' : ''}}"
+        data-tab="uploads" bindtap="onTabTap">
+        <text class="menu-icon">📤</text>
+        <text class="menu-text">我的上传</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="onAbout">
+        <text class="menu-icon">ℹ</text>
+        <text class="menu-text">关于我们</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="onDisclaimer">
+        <text class="menu-icon">📋</text>
+        <text class="menu-text">免责声明</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item logout" bindtap="onLogout">
+        <text class="menu-icon">🚪</text>
+        <text class="menu-text">退出登录</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 收藏列表 -->
+    <view class="list-section" wx:if="{{activeTab === 'favorites'}}">
+      <view class="list-card" wx:for="{{favorites}}" wx:key="id"
+        data-id="{{item.skill_id || item.id}}" bindtap="onItemTap">
+        <text class="card-title">{{item.title}}</text>
+        <text class="card-desc">{{item.desc}}</text>
+      </view>
+      <view class="loading-tip" wx:if="{{loading}}">加载中...</view>
+      <view class="empty-state" wx:if="{{!loading && favorites.length === 0}}">
+        <text class="empty-icon">❤</text>
+        <text class="empty-text">暂无收藏</text>
+      </view>
+    </view>
+
+    <!-- 上传列表 -->
+    <view class="list-section" wx:if="{{activeTab === 'uploads'}}">
+      <view class="list-card" wx:for="{{uploads}}" wx:key="id"
+        data-id="{{item.id}}" bindtap="onItemTap">
+        <view class="card-title-row">
+          <text class="card-title">{{item.title}}</text>
+          <text class="status-badge status-{{item.status}}">
+            {{item.status === 'published' ? '已发布' : item.status === 'pending' ? '审核中' : item.status === 'rejected' ? '已驳回' : item.status}}
+          </text>
+        </view>
+        <text class="card-desc">{{item.desc}}</text>
+      </view>
+      <view class="loading-tip" wx:if="{{loading}}">加载中...</view>
+      <view class="empty-state" wx:if="{{!loading && uploads.length === 0}}">
+        <text class="empty-icon">📤</text>
+        <text class="empty-text">暂无上传</text>
+      </view>
+    </view>
+  </view>
+</view>

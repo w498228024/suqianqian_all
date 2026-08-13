@@ -1,0 +1,62 @@
+<view class="page-detail" wx:if="{{skill}}">
+  <!-- 头部信息 -->
+  <view class="detail-header">
+    <text class="detail-title">{{skill.title}}</text>
+    <text class="detail-desc">{{skill.desc}}</text>
+    <view class="detail-meta">
+      <text class="meta-item" wx:if="{{skill.author}}">作者: {{skill.author}}</text>
+      <text class="meta-item">来源: {{skill.source_type}}</text>
+      <text class="meta-item">协议: {{skill.license}}</text>
+    </view>
+    <view class="detail-tags">
+      <text class="tag tag-primary">{{skill.category}}</text>
+      <text class="tag tag-primary" wx:if="{{skill.sub_category}}">{{skill.sub_category}}</text>
+      <text class="tag tag-success" wx:for="{{skill.fit_tools}}" wx:key="*this">{{item}}</text>
+      <text class="tag tag-warning" wx:for="{{skill.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-bar">
+    <button class="action-btn btn-primary" bindtap="onCopy">
+      <text>📋 一键复制</text>
+    </button>
+    <button class="action-btn btn-outline" bindtap="onDownload">
+      <text>📥 下载 MD</text>
+    </button>
+    <view class="fav-btn {{isFavorited ? 'favorited' : ''}} {{favAnimating ? 'animating' : ''}}" bindtap="onFavorite">
+      <text class="fav-icon">{{isFavorited ? '❤' : '♡'}}</text>
+    </view>
+  </view>
+
+  <!-- Markdown 内容渲染 -->
+  <view class="md-content">
+    <block wx:for="{{mdBlocks}}" wx:key="index">
+      <text wx:if="{{item.type === 'h1'}}" class="md-h1">{{item.content}}</text>
+      <text wx:if="{{item.type === 'h2'}}" class="md-h2">{{item.content}}</text>
+      <text wx:if="{{item.type === 'h3'}}" class="md-h3">{{item.content}}</text>
+      <text wx:if="{{item.type === 'p'}}" class="md-p">{{item.content}}</text>
+      <text wx:if="{{item.type === 'li'}}" class="md-li">• {{item.content}}</text>
+      <text wx:if="{{item.type === 'oli'}}" class="md-li">  {{item.content}}</text>
+      <view wx:if="{{item.type === 'code'}}" class="md-code-block">
+        <text class="code-lang" wx:if="{{item.lang}}">{{item.lang}}</text>
+        <text class="code-text" selectable>{{item.content}}</text>
+      </view>
+      <view wx:if="{{item.type === 'hr'}}" class="md-hr"></view>
+      <view wx:if="{{item.type === 'br'}}" class="md-br"></view>
+    </block>
+
+    <view class="empty-state" wx:if="{{mdBlocks.length === 0}}">
+      <text class="empty-icon">📄</text>
+      <text class="empty-text">暂无内容</text>
+    </view>
+  </view>
+
+  <!-- 底部 Banner 广告 -->
+  <ad wx:if="{{adEnabled}}" unit-id="ad-unit-detail" ad-type="banner" ad-theme="white"></ad>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-state" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

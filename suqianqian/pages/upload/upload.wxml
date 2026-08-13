@@ -1,0 +1,69 @@
+<view class="page-upload">
+  <view class="form-section">
+    <text class="form-label">Skill 标题 *</text>
+    <input class="form-input" placeholder="请输入 Skill 标题" value="{{title}}" bindinput="onTitleInput" maxlength="50" />
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">简介</text>
+    <textarea class="form-textarea" placeholder="简短介绍这个 Skill" value="{{desc}}" bindinput="onDescInput" maxlength="200" auto-height />
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">分类选择 *</text>
+    <view class="form-row">
+      <picker mode="selector" range="{{categories}}" range-key="name" bindchange="onCategoryChange">
+        <view class="picker-btn">{{category || '选择一级分类'}}</view>
+      </picker>
+      <picker wx:if="{{subCategories.length}}" mode="selector" range="{{subCategories}}" bindchange="onSubCategoryChange">
+        <view class="picker-btn">{{subCategory || '选择二级分类'}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">适配平台</text>
+    <view class="tool-tags">
+      <view class="tool-tag {{selectedTools.indexOf(item) >= 0 ? 'active' : ''}}"
+        wx:for="{{fitTools}}" wx:key="*this"
+        data-tool="{{item}}" bindtap="onToolToggle">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">标签（逗号分隔）</text>
+    <input class="form-input" placeholder="如：思维链, CoT, 精准问答" value="{{tags}}" bindinput="onTagsInput" />
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">Md 正文内容 *</text>
+    <textarea class="form-textarea md-editor" placeholder="请输入 Markdown 格式的 Skill 正文..." value="{{content}}" bindinput="onContentInput" />
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">来源类型</text>
+    <picker mode="selector" range="{{sourceTypes}}" bindchange="onSourceTypeChange">
+      <view class="picker-btn">{{sourceType}}</view>
+    </picker>
+  </view>
+
+  <view class="form-section">
+    <text class="form-label">版权协议</text>
+    <picker mode="selector" range="{{licenses}}" bindchange="onLicenseChange">
+      <view class="picker-btn">{{license}}</view>
+    </picker>
+  </view>
+
+  <view class="form-section agree-section">
+    <checkbox-group bindchange="onAgreeChange">
+      <label class="agree-label">
+        <checkbox value="agree" checked="{{agreed}}" />
+        <text class="agree-text">我承诺内容为原创或已获得合法授权，同意平台审核并发布</text>
+      </label>
+    </checkbox-group>
+  </view>
+
+  <button class="submit-btn btn-primary" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting}}">
+    提交审核
+  </button>
+</view>

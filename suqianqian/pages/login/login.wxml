@@ -1,0 +1,23 @@
+<view class="login-container">
+  <!-- Logo 区域 -->
+  <view class="logo-section">
+    <view class="logo-circle">
+      <text class="logo-text">S</text>
+    </view>
+    <text class="app-name">AI Skill 库</text>
+    <text class="app-desc">本地 AI 工具专用 Skill 素材平台</text>
+  </view>
+
+  <!-- 登录按钮 -->
+  <view class="login-section">
+    <button class="btn-login" bindtap="handleLogin" loading="{{isLogging}}">
+      微信快捷登录
+    </button>
+    <text class="privacy-text">登录即表示同意用户协议和隐私政策</text>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="tips-section" wx:if="{{showTips}}">
+    <text class="tips-text">{{tipsText}}</text>
+  </view>
+</view>
